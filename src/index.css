@@ -1,0 +1,13 @@
+/** @format */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --off-white: #f6f7f7;
+    --off-black: #2b2b2b;
+    --pale-purple: #d7cbfc;
+    --purple: #8b6de9;
+  }
+}
