@@ -7,10 +7,10 @@
     "default_popup": "index.html",
     "default_icon": "vessel_icon.png"
   },
-  "permissions": ["activeTab"],
+  "permissions": ["activeTab", "scripting"],
   "content_scripts": [
     {
-      "matches": ["https://*/*", "http://*/*"],
+      "matches": ["<all_urls>"],
       "js": ["content.js"]
     }
   ]
