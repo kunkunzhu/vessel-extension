@@ -23,5 +23,5 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "scripts", "src/scripts/content.js"]
+  "include": ["src", "scripts", "public/content.js"]
 }

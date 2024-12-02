@@ -1,57 +1,78 @@
 /** @format */
 
 import { Route, MemoryRouter as Router, Routes } from "react-router-dom";
+
+import { useEffect, useState } from "react";
+
+import Setting from "./views/Settings";
 import Home from "./views/Home";
-import Popup from "./views/Popup";
-import { useState } from "react";
 
 function App() {
   const [error, setError] = useState<boolean>(false);
-  const [msg, setMsg] = useState<string>("");
+  const [errorMsg, setErrorMsg] = useState<string>("");
+  const [word, setWord] = useState<string>("");
 
-  const getActiveTab = () => {
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      if (tabs.length > 0) {
+  useEffect(() => {
+    const handleTabQuery = () => {
+      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
         const activeTab = tabs[0];
-        const tabUrl = activeTab.url;
+        const tabUrl = activeTab?.url;
 
         if (!tabUrl) {
           setError(true);
-          setMsg("This page is not supported!");
+          setErrorMsg("No page found ᴖ̈");
         }
 
         let msg = {
-          txt: "hello from popup",
+          txt: "selecting words",
         };
 
         if (activeTab.id) {
-          chrome.tabs.sendMessage(activeTab.id, msg, (response) => {
-            if (!response) {
-              setError(true);
-              setMsg("Please refresh the page and try again ᴖ̈");
-            } else if (response.swor === "_TextNotSelected_") {
-              setError(false);
-              setMsg("Please select any word to learn about its meaning ᵕ̈");
-            } else {
-              let swo = response.swor;
-              swo = swo.replace(/[^a-zA-Z ]/g, "");
-              setMsg(swo);
+          // inject content.js if it's not already loaded
+          chrome.scripting.executeScript(
+            {
+              target: { tabId: activeTab.id },
+              files: ["content.js"],
+            },
+            () => {
+              console.log("Content script injected.");
+              if (activeTab.id) {
+                chrome.tabs.sendMessage(activeTab.id, msg, (response) => {
+                  if (!response) {
+                    setError(true);
+                    setErrorMsg("Please refresh the page and try again ᴖ̈");
+                  } else if (response.swor === "_TextNotSelected_") {
+                    setError(false);
+                    setErrorMsg(
+                      "Please select any word to learn about its meaning ᵕ̈"
+                    );
+                  } else {
+                    let word = response.swor;
+                    // remove all non-alphabetical characters
+                    word = word.replace(/[^a-zA-Z ]/g, "");
+                    setWord(word);
+                  }
+                });
+              }
             }
-          });
+          );
         }
-      }
-    });
-  };
+      });
+    };
 
-  getActiveTab();
-  console.log(error);
+    handleTabQuery();
+  }, []);
+
+  console.log(error, errorMsg);
 
   return (
     <Router>
       <Routes>
-        {/* TO DO: figure out external routing */}
-        <Route path="/" element={<Popup message={msg} />}></Route>
-        <Route path="/home" element={<Home />}></Route>
+        <Route
+          path="/"
+          element={<Home error={error} errorMsg={errorMsg} word={word} />}
+        ></Route>
+        <Route path="/setting" element={<Setting />}></Route>
       </Routes>
     </Router>
   );
