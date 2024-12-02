@@ -1,37 +1,42 @@
 /** @format */
 
 import { Card } from "../components/browser/Card";
-import { Collection } from "../components/Collection";
-import { Navheader } from "../components/Navheader";
-import { Search } from "../components/Search";
-import { Viewmenu } from "../components/Viewmenu";
+import { LinkButton } from "../components/Buttons";
 
-const sampleWords = [
-  "paradigm",
-  "parochial",
-  "paternalistic",
-  "patronizing",
-  "physicomorphs",
-  "physiurgic",
-  "pleasantries",
-  "pliability",
-  "pretentious",
-];
+interface DefaultPopupI {
+  msg: string;
+}
 
-function Home() {
+interface HomeI {
+  error: boolean;
+  errorMsg: string;
+  word: string;
+}
+
+function DefaultPopup({ msg }: DefaultPopupI) {
   return (
-    <div className="overflow-hidden w-screen h-screen font-text bg-background text-primary">
-      <Navheader />
-      <div className="flex mx-auto items-center gap-20 pl-40 pt-8">
-        <Viewmenu />
-        <Search />
+    <div className="flex flex-col gap-4 px-6 py-4 text-primary rounded-lg border-accent border w-96 h-auto bg-white">
+      <div className="flex flex-col gap-1 pb-2 border-secondary border-b">
+        <div className="font-title text-3xl italic">Welcome to Vessel.</div>
+        <div className="text-md">Expand your vocabulary as you browse. </div>
       </div>
-      <div className="px-40 mt-20 ">
-        <Collection words={sampleWords} />
+      <div>{msg}</div>
+      <div className="flex w-full justify-between pr-10">
+        <LinkButton text="Collection" to="/home" />
+        <LinkButton text="Settings" to="/setting" />
       </div>
-      <Card />
     </div>
   );
+}
+
+function Home({ error, errorMsg, word }: HomeI) {
+  if (error || !word) {
+    // if there is an error or if no word is selected, display default popup view
+    return <DefaultPopup msg={errorMsg} />;
+  } else {
+    // otherwise, display the word card !
+    return <Card word={word} />;
+  }
 }
 
 export default Home;
