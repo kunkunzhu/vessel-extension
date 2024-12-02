@@ -1,4 +1,9 @@
 /** @format */
+import { IoMdAdd } from "react-icons/io";
+
+interface CardI {
+  word: string;
+}
 
 function Circle() {
   return (
@@ -17,11 +22,14 @@ function Bullet({ text, italic }: { text: string; italic?: boolean }) {
   );
 }
 
-export function Card() {
+export function Card({ word }: CardI) {
   return (
-    <div className="flex flex-col gap-4 px-8 py-6 rounded-lg border-accent border max-w-[450px] bg-white">
-      <div className="text-3xl font-title italic pb-2 border-b border-secondary">
-        Pliability
+    <div className="flex flex-col gap-4 px-8 py-6 rounded-lg border-accent border w-96 h-auto bg-white">
+      <div className="flex justify-between items-center text-3xl font-title italic pb-2 border-b border-secondary">
+        <div className="capitalize">{word}</div>
+        <div className="rounded-full bg-secondary cursor-crosshair hover:drop-shadow-bullet text-background items-center flex p-1 size-7 transition-all hover:size-8">
+          <IoMdAdd />
+        </div>
       </div>
       <div className="flex flex-col gap-1 pb-2 border-b border-secondary">
         <Bullet text="柔韧性, 灵活性" />
