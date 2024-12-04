@@ -8,8 +8,7 @@ interface DefaultPopupI {
 }
 
 interface HomeI {
-  error: boolean;
-  errorMsg: string;
+  error: string;
   word: string;
 }
 
@@ -22,6 +21,7 @@ function DefaultPopup({ msg }: DefaultPopupI) {
       </div>
       <div>{msg}</div>
       <div className="flex w-full justify-between pr-10">
+        {/* <Button text="sign in" onClick={} */}
         <LinkButton text="Collection" to="/home" />
         <LinkButton text="Settings" to="/setting" />
       </div>
@@ -29,10 +29,13 @@ function DefaultPopup({ msg }: DefaultPopupI) {
   );
 }
 
-function Home({ error, errorMsg, word }: HomeI) {
+function Home({ error, word }: HomeI) {
+  console.log("word", word);
+  console.log("error", error);
+
   if (error || !word) {
     // if there is an error or if no word is selected, display default popup view
-    return <DefaultPopup msg={errorMsg} />;
+    return <DefaultPopup msg={error} />;
   } else {
     // otherwise, display the word card !
     return <Card word={word} />;
