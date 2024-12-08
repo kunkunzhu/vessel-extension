@@ -18,7 +18,7 @@ interface LinkButtonI extends ButtonBaseI {
 
 export function ButtonBase({ text, link = false }: ButtonBaseI) {
   return (
-    <div className="bg-secondary flex gap-2 items-center rounded-full py-2 px-4 min-w-[100px] hover:scale-105 hover:drop-shadow-bullet transition-all cursor-crosshair">
+    <div className="bg-secondary justify-center flex gap-2 items-center rounded-full py-2 px-4 min-w-[100px] hover:scale-105 hover:drop-shadow-bullet transition-all cursor-crosshair">
       <span className="capitalize">{text}</span>
       {link && <FaArrowRight className="text-background" />}
     </div>
