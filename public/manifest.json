@@ -7,7 +7,20 @@
     "default_popup": "index.html",
     "default_icon": "vessel_icon.png"
   },
-  "permissions": ["activeTab", "scripting", "contextMenus"],
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "contextMenus",
+    "identity",
+    "storage"
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  },
+  "host_permissions": [
+    "https://*.firebaseio.com/",
+    "https://*.googleapis.com/"
+  ],
   "background": {
     "service_worker": "background.js"
   },

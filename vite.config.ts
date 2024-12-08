@@ -21,6 +21,10 @@ export default defineConfig({
           src: "public/background.js",
           dest: ".",
         },
+        {
+          src: "src/firebaseConfig.js",
+          dest: ".",
+        },
       ],
     }),
   ],
