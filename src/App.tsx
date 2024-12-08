@@ -7,12 +7,14 @@ import { useEffect, useState } from "react";
 import Setting from "./views/Settings";
 import Home from "./views/Home";
 import { handleTabQuery } from "./lib/utils";
+import Login from "./views/Login";
+import { AuthContextProvider } from "./context/AuthContext";
 
 function App() {
   const [error, setError] = useState<string>("");
   const [word, setWord] = useState<string>("");
 
-  const queryFunc = ({ activeTab }: { activeTab: chrome.tabs.Tab }) => {
+  function queryFunc({ activeTab }: { activeTab: chrome.tabs.Tab }) {
     const msg = {
       type: "word selection",
     };
@@ -33,7 +35,7 @@ function App() {
         }
       });
     }
-  };
+  }
 
   useEffect(() => {
     handleTabQuery({ queryFunc, setError });
@@ -43,12 +45,15 @@ function App() {
   console.log(word);
 
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home error={error} word={word} />} />
-        <Route path="/setting" element={<Setting />} />
-      </Routes>
-    </Router>
+    <AuthContextProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Home error={error} word={word} />} />
+          <Route path="/setting" element={<Setting />} />
+          <Route path="/login" element={<Login />} />
+        </Routes>
+      </Router>
+    </AuthContextProvider>
   );
 }
 
