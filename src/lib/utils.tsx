@@ -2,7 +2,7 @@
 
 interface handleTabQueryProps {
   queryFunc: ({ activeTab }: { activeTab: chrome.tabs.Tab }) => void;
-  setError: (error: string) => void;
+  setError?: (error: string) => void;
 }
 
 export const handleTabQuery = ({
@@ -15,7 +15,7 @@ export const handleTabQuery = ({
     const activeTab = tabs[0];
     const tabUrl = activeTab?.url;
 
-    if (!tabUrl) {
+    if (!tabUrl && setError) {
       setError("No page found ᴖ̈");
     }
 
