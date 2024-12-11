@@ -11,3 +11,14 @@ export interface AuthResI {
   error?: any;
   user?: User;
 }
+
+export interface DefinitionsI {
+  type: string;
+  meanings: string[];
+}
+
+export interface WordI {
+  word: string;
+  phonetic?: string;
+  definitions: DefinitionsI[];
+}
