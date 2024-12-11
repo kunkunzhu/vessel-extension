@@ -28,20 +28,24 @@ function Bullet({ text, italic }: { text: string; italic?: boolean }) {
 function CardContent({ dictWord }: { dictWord: WordI }) {
   console.log("this is the word:", dictWord);
 
-  const { word, definitions } = dictWord;
+  let { word, definitions } = dictWord;
 
   console.log("about the word:", word, definitions);
 
   const renderDefinition = ({
     def,
-
     last = false,
   }: {
     def: DefinitionsI;
-
     last?: boolean;
   }) => {
     console.log("rendering definition...", def);
+
+    let meanings = def.meanings;
+    if (meanings.length > 3) {
+      meanings = meanings.slice(0, 3);
+    }
+
     return (
       <div
         className={`flex flex-col gap-1 ${
@@ -49,7 +53,7 @@ function CardContent({ dictWord }: { dictWord: WordI }) {
         }`}
       >
         <div className="text-accent italic text-xs">{def.type}</div>
-        {def.meanings.map((meaning) => (
+        {meanings.map((meaning) => (
           <Bullet text={meaning} />
         ))}
       </div>
