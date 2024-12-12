@@ -52,12 +52,12 @@ function Home({ error, word }: HomeI) {
   console.log("word", word);
   console.log("error", error);
 
-  if (error || !word) {
+  if (error || !word || !user) {
     // if there is an error or if no word is selected, display default popup view
     return <DefaultPopup msg={error} />;
   } else {
     // otherwise, display the word card !
-    return <Card word={word} />;
+    return <Card word={word} user={user} />;
   }
 }
 

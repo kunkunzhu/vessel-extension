@@ -1,14 +1,11 @@
 /** @format */
 
-import firebase_app from "../firebaseConfig";
 import {
   signInWithEmailAndPassword,
-  getAuth,
   signOut,
 } from "firebase/auth/web-extension";
 import { AuthResI } from "../lib/types";
-
-const auth = getAuth(firebase_app);
+import auth from "../firebase/auth";
 
 export const logIn = async ({
   email,

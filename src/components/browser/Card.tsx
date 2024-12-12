@@ -1,11 +1,15 @@
 /** @format */
 import { useEffect, useState } from "react";
 import { IoMdAdd } from "react-icons/io";
+import { AiFillSound } from "react-icons/ai";
 import { fetchWord } from "../../lib/utils";
 import { DefinitionsI, WordI } from "../../lib/types";
+import { User } from "firebase/auth";
+import { addWordForUser } from "../../services/storage";
 
 interface CardI {
   word: string;
+  user: User;
 }
 
 function Circle() {
@@ -25,10 +29,14 @@ function Bullet({ text, italic }: { text: string; italic?: boolean }) {
   );
 }
 
-function CardContent({ dictWord }: { dictWord: WordI }) {
+function CardContent({ dictWord, user }: { dictWord: WordI; user: User }) {
   console.log("this is the word:", dictWord);
 
-  let { word, definitions } = dictWord;
+  let { word, phonetic, definitions } = dictWord;
+
+  if (definitions.length > 3) {
+    definitions = definitions.slice(0, 3);
+  }
 
   console.log("about the word:", word, definitions);
 
@@ -60,12 +68,34 @@ function CardContent({ dictWord }: { dictWord: WordI }) {
     );
   };
 
+  const playSound = ({ phonetic }: { phonetic: string }) => {
+    const audio = new Audio(phonetic);
+    audio.play().catch((error) => {
+      console.error("Failed to play the sound:", error);
+    });
+  };
+
+  const addWord = async ({ dictWord }: { dictWord: WordI }) => {
+    const userId = user.uid;
+
+    // TO DO: signal whether this word has been added already
+    return await addWordForUser(userId, dictWord);
+  };
+
   return (
     <>
       <div className="flex justify-between items-center text-3xl font-title italic pb-2 border-b border-secondary">
-        <div className="capitalize">{word}</div>
+        <div className="flex gap-4 items-center">
+          <div className="capitalize">{word}</div>
+          {phonetic && (
+            <AiFillSound
+              onClick={() => playSound({ phonetic })}
+              className="text-secondary opacity-50 cursor-crosshair text-sm hover:opacity-100 transition-all"
+            />
+          )}
+        </div>
         <div className="rounded-full bg-secondary cursor-crosshair hover:drop-shadow-bullet text-background items-center flex p-1 size-7 transition-all hover:size-8">
-          <IoMdAdd />
+          <IoMdAdd onClick={() => addWord({ dictWord })} />
         </div>
       </div>
 
@@ -77,7 +107,7 @@ function CardContent({ dictWord }: { dictWord: WordI }) {
   );
 }
 
-export function Card({ word }: CardI) {
+export function Card({ word, user }: CardI) {
   const [dictWord, setDictWord] = useState<WordI | null>(null);
   const [error, setError] = useState<string>("");
 
@@ -98,7 +128,7 @@ export function Card({ word }: CardI) {
   return (
     <div className="flex flex-col gap-4 px-8 py-6 rounded-lg border-accent border w-96 h-auto bg-white">
       {error && <div>{error}</div>}
-      {dictWord && <CardContent dictWord={dictWord} />}
+      {dictWord && <CardContent dictWord={dictWord} user={user} />}
     </div>
   );
 }
