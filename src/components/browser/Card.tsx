@@ -5,7 +5,8 @@ import { AiFillSound } from "react-icons/ai";
 import { fetchWord } from "../../lib/utils";
 import { DefinitionsI, WordI } from "../../lib/types";
 import { User } from "firebase/auth";
-import { addWordForUser } from "../../services/storage";
+import { addWordForUser, checkIfWordExists } from "../../services/storage";
+import { IoMdCheckmark } from "react-icons/io";
 
 interface CardI {
   word: string;
@@ -30,15 +31,25 @@ function Bullet({ text, italic }: { text: string; italic?: boolean }) {
 }
 
 function CardContent({ dictWord, user }: { dictWord: WordI; user: User }) {
-  console.log("this is the word:", dictWord);
+  const [added, setAdded] = useState<boolean>(false);
 
   let { word, phonetic, definitions } = dictWord;
 
+  // brevity is the soul of wit
   if (definitions.length > 3) {
     definitions = definitions.slice(0, 3);
   }
 
-  console.log("about the word:", word, definitions);
+  useEffect(() => {
+    const checkWordExistence = async () => {
+      const exists = await checkIfWordExists(user.uid, dictWord.word);
+      if (exists && !added) {
+        setAdded(true);
+      }
+    };
+
+    checkWordExistence();
+  }, [dictWord]);
 
   const renderDefinition = ({
     def,
@@ -47,9 +58,10 @@ function CardContent({ dictWord, user }: { dictWord: WordI; user: User }) {
     def: DefinitionsI;
     last?: boolean;
   }) => {
-    console.log("rendering definition...", def);
+    console.log("fetching definition...", def);
 
     let meanings = def.meanings;
+    // brevity is the soul of wit
     if (meanings.length > 3) {
       meanings = meanings.slice(0, 3);
     }
@@ -77,9 +89,8 @@ function CardContent({ dictWord, user }: { dictWord: WordI; user: User }) {
 
   const addWord = async ({ dictWord }: { dictWord: WordI }) => {
     const userId = user.uid;
-
-    // TO DO: signal whether this word has been added already
-    return await addWordForUser(userId, dictWord);
+    await addWordForUser(userId, dictWord);
+    setAdded(true);
   };
 
   return (
@@ -95,7 +106,11 @@ function CardContent({ dictWord, user }: { dictWord: WordI; user: User }) {
           )}
         </div>
         <div className="rounded-full bg-secondary cursor-crosshair hover:drop-shadow-bullet text-background items-center flex p-1 size-7 transition-all hover:size-8">
-          <IoMdAdd onClick={() => addWord({ dictWord })} />
+          {added ? (
+            <IoMdCheckmark />
+          ) : (
+            <IoMdAdd onClick={() => addWord({ dictWord })} />
+          )}
         </div>
       </div>
 
@@ -114,7 +129,6 @@ export function Card({ word, user }: CardI) {
   useEffect(() => {
     const getWord = async () => {
       const res = await fetchWord({ word });
-
       if (res.success && res.word) {
         setDictWord(res.word);
       } else {
