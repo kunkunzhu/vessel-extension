@@ -55,7 +55,11 @@ export const fetchWord = async ({ word }: { word: string }) => {
     return { success: false, error: error };
   }
 
-  const phonetic = data[0].phonetics[0].audio;
+  let phonetic = undefined;
+  if (data[0].phonetics[0]) {
+    phonetic = data[0].phonetics[0].audio;
+  }
+
   const meanings = data[0].meanings.map((meaning: any) => ({
     type: meaning.partOfSpeech,
     meanings: meaning.definitions.map((def: any) => def.definition),
