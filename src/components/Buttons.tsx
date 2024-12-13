@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 interface ButtonBaseI {
   text: string;
   link?: boolean;
+  type?: "primary" | "secondary";
 }
 
 interface ButtonI extends ButtonBaseI {
@@ -16,19 +17,27 @@ interface LinkButtonI extends ButtonBaseI {
   to: string;
 }
 
-export function ButtonBase({ text, link = false }: ButtonBaseI) {
+export function ButtonBase({
+  text,
+  link = false,
+  type = "primary",
+}: ButtonBaseI) {
   return (
-    <div className="bg-secondary justify-center flex gap-2 items-center rounded-full py-2 px-4 min-w-[100px] hover:scale-105 hover:drop-shadow-bullet transition-all cursor-crosshair">
+    <div
+      className={`${
+        type === "primary" ? "bg-secondary" : "bg-white border border-secondary"
+      } justify-center flex gap-2 items-center rounded-full py-2 px-4 min-w-[100px] hover:scale-105 hover:drop-shadow-bullet transition-all cursor-crosshair`}
+    >
       <span className="capitalize">{text}</span>
       {link && <FaArrowRight className="text-background" />}
     </div>
   );
 }
 
-export function Button({ text, onClick }: ButtonI) {
+export function Button({ text, onClick, type = "primary" }: ButtonI) {
   return (
     <div onClick={onClick}>
-      <ButtonBase text={text} />
+      <ButtonBase text={text} type={type} />
     </div>
   );
 }
