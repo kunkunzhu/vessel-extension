@@ -2,11 +2,11 @@
 import { useEffect, useState } from "react";
 import { IoMdAdd } from "react-icons/io";
 import { AiFillSound } from "react-icons/ai";
-import { fetchWord } from "../../lib/utils";
 import { DefinitionsI, WordI } from "../../lib/types";
 import { User } from "firebase/auth";
 import { addWordForUser, checkIfWordExists } from "../../services/storage";
 import { IoMdCheckmark } from "react-icons/io";
+import { fetchWord } from "../../services/dict";
 
 interface CardI {
   word: string;
@@ -131,8 +131,8 @@ export function Card({ word, user }: CardI) {
       const res = await fetchWord({ word });
       if (res.success && res.word) {
         setDictWord(res.word);
-      } else {
-        setError(error);
+      } else if (res.error) {
+        setError(res.error);
       }
     };
 
@@ -141,7 +141,14 @@ export function Card({ word, user }: CardI) {
 
   return (
     <div className="flex flex-col gap-4 px-8 py-6 rounded-lg border-accent border w-96 h-auto bg-white">
-      {error && <div>{error}</div>}
+      {error && (
+        <div className="flex flex-col gap-2">
+          <span className="text-lg">{error}</span>
+          <span className="opacity-50">
+            Please try selecting any other word on the page haha ᵕ̈
+          </span>
+        </div>
+      )}
       {dictWord && <CardContent dictWord={dictWord} user={user} />}
     </div>
   );
