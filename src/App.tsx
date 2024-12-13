@@ -4,7 +4,6 @@ import { Route, MemoryRouter as Router, Routes } from "react-router-dom";
 
 import { useEffect, useState } from "react";
 
-import Setting from "./views/Settings";
 import Home from "./views/Home";
 import { handleTabQuery } from "./lib/utils";
 import Login from "./views/Login";
@@ -49,7 +48,6 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Home error={error} word={word} />} />
-          <Route path="/setting" element={<Setting />} />
           <Route path="/login" element={<Login />} />
         </Routes>
       </Router>

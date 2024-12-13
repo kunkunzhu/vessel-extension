@@ -29,9 +29,6 @@ function DefaultPopup({ msg }: DefaultPopupI) {
       <div className="flex flex-col gap-2 pr-10">
         <div className="flex w-full justify-between ">
           <LinkButton text="Collection" to="/home" />
-          <LinkButton text="Settings" to="/setting" />
-        </div>
-        <div className="flex justify-end">
           <Button text="Log Out" onClick={() => logOut()} />
         </div>
       </div>
