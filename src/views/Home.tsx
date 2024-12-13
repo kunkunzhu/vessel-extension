@@ -2,10 +2,11 @@
 
 import { useEffect } from "react";
 import { Card } from "../components/browser/Card";
-import { Button, LinkButton } from "../components/Buttons";
+import { Button } from "../components/Buttons";
 import { useAuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { logOut } from "../services/auth";
+import { navigateToSite } from "../lib/utils";
 
 // this is the default view that is shown if user IS logged in.
 
@@ -28,7 +29,11 @@ function DefaultPopup({ msg }: DefaultPopupI) {
       <div>{msg}</div>
       <div className="flex flex-col gap-2 pr-10">
         <div className="flex w-full justify-between ">
-          <LinkButton text="Collection" to="/home" />
+          <Button
+            text="Collection"
+            link={true}
+            onClick={() => navigateToSite(import.meta.env.VITE_WEBAPP_URL)}
+          />
           <Button text="Log Out" onClick={() => logOut()} type="secondary" />
         </div>
       </div>

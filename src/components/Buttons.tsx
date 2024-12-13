@@ -34,10 +34,15 @@ export function ButtonBase({
   );
 }
 
-export function Button({ text, onClick, type = "primary" }: ButtonI) {
+export function Button({
+  text,
+  onClick,
+  type = "primary",
+  link = false,
+}: ButtonI) {
   return (
     <div onClick={onClick}>
-      <ButtonBase text={text} type={type} />
+      <ButtonBase text={text} type={type} link={link} />
     </div>
   );
 }
