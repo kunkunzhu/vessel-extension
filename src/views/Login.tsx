@@ -75,6 +75,7 @@ export default function Login() {
               setError("");
               setPassword(e.target.value);
             }}
+            type="password"
             placeholder="12345"
             classname="min-w-[220px]"
           />

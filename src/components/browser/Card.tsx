@@ -50,7 +50,7 @@ function CardContent({ dictWord, user }: { dictWord: WordI; user: User }) {
     };
 
     checkWordExistence();
-  }, [dictWord]);
+  }, [added, dictWord, user.uid]);
 
   const renderDefinition = ({
     def,
