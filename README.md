@@ -1,5 +1,5 @@
 <!-- @format -->
 
-# Vessel Chrome Extension
+# Vessle Chrome Extension
 
 Built using Vite, React with TypeScript, and Firebase. 💌

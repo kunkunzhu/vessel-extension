@@ -2,7 +2,7 @@
 
 chrome.contextMenus.create({
   id: "HeadlineFetcher",
-  title: "collect into vessel",
+  title: "collect into vessle",
   contexts: ["all"],
 });
 
