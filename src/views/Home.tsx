@@ -6,7 +6,6 @@ import { Button } from "../components/Buttons";
 import { useAuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { logOut } from "../services/auth";
-import { navigateToSite } from "../lib/utils";
 
 // this is the default view that is shown if user IS logged in.
 
@@ -32,7 +31,11 @@ function DefaultPopup({ msg }: DefaultPopupI) {
           <Button
             text="Collection"
             link={true}
-            onClick={() => navigateToSite(import.meta.env.VITE_WEBAPP_URL)}
+            onClick={() => {
+              chrome.tabs.create({
+                url: "https://vessle.vercel.app"
+              })
+            }}
           />
           <Button text="Log Out" onClick={() => logOut()} type="secondary" />
         </div>
