@@ -83,13 +83,16 @@ export default function Login() {
         <div className="text-xs mb-4">
           <div className="opacity-75 ">
             Don't have an account yet?{" "}
-            <a
-              href="http://localhost:3000/auth/signup"
+            <div
+              onClick={() => {
+                chrome.tabs.create({
+                  url: "https://vessle.vercel.app/auth/signup"
+                })
+              }}
               className="underline text-accent"
             >
-              {/* // TO DO: implement web-page redirect */}
               Sign up
-            </a>{" "}
+            </div>{" "}
             instead.
           </div>
           {error && <div className="text-red-500">Oops! {error}</div>}
