@@ -23,7 +23,7 @@ export default function Login() {
     if (user) {
       navigate("/");
     }
-  }, [user]);
+  }, [user, navigate]);
 
   const handleForm = async () => {
     console.log("handling sign in request...");
@@ -60,6 +60,7 @@ export default function Login() {
               setError("");
               setEmail(e.target.value);
             }}
+            type="password"
             placeholder="example@mail.com"
             classname="min-w-[220px] text-secondary"
           />

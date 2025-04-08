@@ -33,6 +33,7 @@ function Bullet({ text, italic }: { text: string; italic?: boolean }) {
 function CardContent({ dictWord, user }: { dictWord: WordI; user: User }) {
   const [added, setAdded] = useState<boolean>(false);
 
+  // eslint-disable-next-line prefer-const
   let { word, phonetic, definitions } = dictWord;
 
   // brevity is the soul of wit
@@ -68,9 +69,8 @@ function CardContent({ dictWord, user }: { dictWord: WordI; user: User }) {
 
     return (
       <div
-        className={`flex flex-col gap-1 ${
-          !last && "pb-2 border-b border-secondary"
-        }`}
+        className={`flex flex-col gap-1 ${!last && "pb-2 border-b border-secondary"
+          }`}
       >
         <div className="text-accent italic text-xs">{def.type}</div>
         {meanings.map((meaning) => (

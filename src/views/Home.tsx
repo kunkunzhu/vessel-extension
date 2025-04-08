@@ -49,7 +49,7 @@ function Home({ error, word }: HomeI) {
     if (!user) {
       navigate("/login");
     }
-  }, [user]);
+  }, [user, navigate]);
 
   console.log("word", word);
   console.log("error", error);
