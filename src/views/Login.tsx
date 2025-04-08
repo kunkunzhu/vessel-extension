@@ -83,7 +83,7 @@ export default function Login() {
         <div className="text-xs mb-4">
           <div className="opacity-75 ">
             Don't have an account yet?{" "}
-            <div
+            <span
               onClick={() => {
                 chrome.tabs.create({
                   url: "https://vessle.vercel.app/auth/signup"
@@ -92,7 +92,7 @@ export default function Login() {
               className="underline text-accent"
             >
               Sign up
-            </div>{" "}
+            </span>{" "}
             instead.
           </div>
           {error && <div className="text-red-500">Oops! {error}</div>}
